@@ -1,0 +1,41 @@
+{
+    "title": "create a new user",
+    "type": "object",
+    "properties": {
+        "body": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email",
+                    "minLength": 1,
+                    "maxLength": 254,
+                    "errorMessage": {
+                        "type": "Email must be string",
+                        "minLength": "Email must NOT have fewer than 1 characters.",
+                        "maxLength": "Email must NOT have longer than 254 characters.",
+                        "format": "Email must match format email."
+                    }
+                },
+                "password": {
+                    "type": "string",
+                    "pattern": "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\\w\\s]).{6,}$",
+                    "minLength": 6,
+                    "errorMessage": {
+                        "type": "Password must be string.",
+                        "pattern": "Password must match pattern \"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\\w\\s]).{6,}$\".",
+                        "minLength": "Password must NOT have fewer than 6 characters."
+                    }
+                }
+            },
+            "required": [ "email", "password"],
+            "errorMessage": {
+                "required": {
+                    "email": "Email is required.",
+                    "password": "Password is required."
+                }
+            }
+        }
+    },
+    "required": ["body"]
+}

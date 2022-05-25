@@ -1,0 +1,38 @@
+{
+    "title": "create a new workspace",
+    "type": "object",
+    "properties": {
+        "body": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "errorMessage": {
+                        "type": "Name must be string."
+                    }
+                },
+                "url": {
+                    "type": "string",
+                    "errorMessage": {
+                        "type": "Url type must be string."
+                    }
+                },
+            
+                "project": {
+                    "type": "string",
+                    "errorMessage": {
+                        "type": "Project must be string."
+                    }
+                }
+            },
+            "required": ["name", "url"],
+            "errorMessage": {
+                "required": {
+                    "name": "Name is required.",
+                    "url": "Url is required."
+                }
+            }
+        }
+    },
+    "required": ["body"]
+}

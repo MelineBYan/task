@@ -1,0 +1,421 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Workspace management system",
+        "description": "Workspace management system",
+        "license": {
+            "name": "",
+            "url": ""
+        }
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Users",
+            "description": "Users API"
+        },
+        {
+            "name": "Workspaces",
+            "description": "Workspace API"
+        }
+    ],
+    "schemes": ["http", "https"],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "authorization",
+            "in": "header"
+        }
+    },
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+        "/user/signup": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "User sign up",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/userSignUp"
+                        }
+                    }
+                ],
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "responses": {
+                    "201": {
+                        "description": "User sign up success",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "5XX": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/signin": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "User sign in",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/userSignIn"
+                        }
+                    }
+                ],
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "User signed in successfully",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "5XX": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/profile": {
+            "get": {
+                "tags": ["Users"],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "summary": "Get user profile data",
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "User's profile data",
+                        "schema": {
+                            "$ref": "#/definitions/userSignUp"
+                        }
+                    },
+                    "401": {
+                        "description": "Not Authorized",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "5XX": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/workspace": {
+            "get": {
+                "tags": ["Workspace"],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "summary": "Get all workspaces",
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Workspaces list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/apiResponse"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "5XX": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "tags": ["Workspace"],
+                "summary": "Create a workspace",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "workspace",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/workspace"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Workspace created",
+                        "schema": {
+                            "$ref": "#/definitions/workspace"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Not Authorized",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "5XX": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/workspace/{id}": {
+            "get": {
+                "tags": ["Workspace"],
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "summary": "Get single workspace",
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Workspace id",
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": " Single workspace",
+                        "schema": {
+                            "$ref": "#/definitions/workspace"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "5XX": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "tags": ["Workspace"],
+                "summary": "Update a workspace",
+                "consumes": ["application/json"],
+                "produces": ["application/json"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Workspace id",
+                        "type": "string"
+                    },
+                    {
+                        "name": "workspace",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/workspace"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Workspace updated successfully",
+                        "schema": {
+                            "$ref": "#/definitions/workspace"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Not Authorized",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "5XX": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Workspace id",
+                        "type": "string"
+                    }
+                ],
+                "tags": ["Workspace"],
+                "summary": "Delete single workspace",
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "Delete workspace success",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Not Authorized",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    },
+                    "5XX": {
+                        "description": "Unexpected error",
+                        "schema": {
+                            "$ref": "#/definitions/apiResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "userSignIn": {
+            "required": ["email", "password"],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "userSignUp": {
+            "required": ["email", "password"],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "format": "email"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "workspace": {
+            "required": ["name", "url", "project"],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "project": {
+                    "type": "string"
+                },
+                "_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "apiResponse": {
+            "properties": {
+                "message": {
+                    "type": "string"
+                },
+                "code": {
+                    "type": "number"
+                },
+                "data": {
+                    "type": "any"
+                },
+                "error": {
+                    "type": "boolean"
+                }
+            }
+        }
+    }
+}
