@@ -1,15 +1,21 @@
-import React, { useMemo, } from 'react';
-import {  Layout, Menu, Typography } from 'antd';
+import React, { useMemo, useCallback} from 'react';
+import {  Layout, Menu, Typography, Row, Col, Button } from 'antd';
 import './dashboard-content.less';
 import { Header } from 'antd/lib/layout/layout';
+import { clearAuthInfo, signOut } from '../../redux';
 import FormCreateWorkspace from '../../components/form-create-workspace/form-create-workspace';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState, ReducerNames } from '../../redux';
 
 const { Sider, Content } = Layout;
 const Dashboard: React.FC = () => {
-  const {id} = useParams();
+const dispatch = useDispatch();
+const {id} = useParams();
+const onLogOutClick = useCallback(() => {
+    dispatch(signOut());
+    clearAuthInfo();
+}, [dispatch]);
   const { workspaces } = useSelector((state: RootState) => state[ReducerNames.WORKSPACE]);
   const workspace = useMemo(()=> {
 return workspaces.find(({_id})=> _id === id);
@@ -28,6 +34,7 @@ return workspaces.find(({_id})=> _id === id);
                 <Header className="header" style={{ backgroundColor: '#350d36', padding: '0' }}>
                     <Menu mode="horizontal" />
                 </Header>
+                <Row justify="end"><Col> <Button onClick={onLogOutClick} >Logout</Button></Col></Row>
                 <Content
                     className="dashboard-content"
                     style={{
