@@ -1,6 +1,7 @@
+import { RoutePath } from './../../routes/routes';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { SignInData, AuthData, UserInterface, SignUpData } from '../../core/models/user/user.model';
+import { SignInData, AuthData, SignUpData } from '../../core/models/user/user.model';
 import { AuthDataKeys, UserStoreDataKeys } from '../../utils/constants';
 
 export interface PayloadInterface {
@@ -24,10 +25,13 @@ export const clearAuthInfo = () => {
 
 export const signIn = createAsyncThunk(
     'user/signin',
-    async ({ email, password }: SignInData, { rejectWithValue }) => {
+    async (
+        { email, password, navigateHome }: SignInData & { navigateHome: () => void },
+        { rejectWithValue },
+    ) => {
         const { data } = await axios.post('user/signin', {
             email,
-            password
+            password,
         });
         if (!data.data) {
             return rejectWithValue({
@@ -36,10 +40,12 @@ export const signIn = createAsyncThunk(
                 message: data.message,
             });
         }
+
         setAuthInfo({
             accessToken: data.data.token,
             userId: data.data.id,
         });
+        navigateHome();
         return {
             [AuthDataKeys.USER_ID]: data.id,
             [AuthDataKeys.ACCESS_TOKEN]: data.token,
@@ -49,11 +55,15 @@ export const signIn = createAsyncThunk(
 
 export const signUp = createAsyncThunk(
     'auth/signup',
-    async ({ email, password }: SignUpData, { rejectWithValue }) => {
+    async (
+        { email, password, navigateHome }: SignUpData & { navigateHome: () => void },
+        { rejectWithValue },
+    ) => {
         const { data } = await axios.post('user/signup', {
             email,
             password,
         });
+        console.log(email, password, 'data');
         if (!data.data) {
             return rejectWithValue({
                 error: true,
@@ -66,6 +76,7 @@ export const signUp = createAsyncThunk(
             accessToken: data.data.token,
             userId: data.data.id,
         });
+        navigateHome();
         return {
             email,
             id,
@@ -101,4 +112,3 @@ export const updateUserData = createAsyncThunk('auth/profile/update', async () =
         [UserStoreDataKeys.EMAIL]: data.email,
     };
 });
-
