@@ -15,6 +15,11 @@ export default class UserController {
     ): Promise<Response> {
         try {
             const { email, password } = req.body;
+            if (!email || !password) {
+                return res
+                    .status(404)
+                    .send(ApiResponse.generateBadRequestErrorResponse());
+            }
             const user = await userService.getUserByEmail(email, next);
             if (!user) {
                 return res
@@ -38,9 +43,7 @@ export default class UserController {
                     new ApiResponse(200, result, 'User successfully logged in'),
                 );
         } catch (error) {
-            return res
-                .status(500)
-                .send(ApiResponse.generateDefaultErrorResponse());
+          next(error);
         }
     }
 
@@ -48,7 +51,7 @@ export default class UserController {
         req: Request,
         res: Response,
         next: NextFunction,
-    ): Promise<Response> {
+    ): Promise<Response | void> {
         try {
             const { email, password } = req.body;
             if (!email || !password) {
@@ -63,10 +66,7 @@ export default class UserController {
             }
             const user = await userService.addNewUser(req.body, next);
             if (user) {
-                user.token = jwtService.generateToken(
-                    user.email,
-                    user.id,
-                );
+                user.token = jwtService.generateToken(user.email, user.id);
                 return res
                     .status(200)
                     .send(
@@ -74,9 +74,7 @@ export default class UserController {
                     );
             }
         } catch (error) {
-            return res
-                .status(500)
-                .send(ApiResponse.generateDefaultErrorResponse());
+            return next(error);
         }
     }
 
@@ -86,17 +84,17 @@ export default class UserController {
         next: NextFunction,
     ): Promise<Response> {
         try {
-            const {id} = req.user as UserData;
+            const { id } = req.user as UserData;
             const user = await userService.getUserById(id, next);
             if (!user) {
                 res.status(404).send(
                     ApiResponse.generateNotFoundErrorResponse('User'),
                 );
             }
-        
+
             res.status(200).send(new ApiResponse(200, user, 'User data'));
         } catch (error) {
-            console.log(error, "error");
+            console.log(error, 'error');
             return res
                 .status(500)
                 .send(ApiResponse.generateDefaultErrorResponse());
@@ -116,9 +114,7 @@ export default class UserController {
             }
             res.status(200).send(new ApiResponse(200, users, 'Users data'));
         } catch (error) {
-            return res
-                .status(500)
-                .send(ApiResponse.generateDefaultErrorResponse());
+            next(error);
         }
     }
 }
