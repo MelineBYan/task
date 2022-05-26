@@ -27,6 +27,7 @@ export const signIn = createAsyncThunk(
     async ({ email, password }: SignInData, { rejectWithValue }) => {
         const { data } = await axios.post('user/signin', {
             email,
+            password
         });
         if (!data.data) {
             return rejectWithValue({
