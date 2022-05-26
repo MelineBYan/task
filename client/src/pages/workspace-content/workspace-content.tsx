@@ -37,7 +37,7 @@ const WorkspaceContent = () => {
             </Row>
             <Row justify={'center'}>
                 <Col className="workspaces-content" flex={layout}>
-                    <Row justify="start">
+                    <Row justify="center">
                         <Col flex={'30%'}>
                             <Typography.Title
                                 level={1}
@@ -52,7 +52,7 @@ const WorkspaceContent = () => {
             </Row>
             <Row justify="center">
                 <Col className="workspaces-content" flex={layout}>
-                    <Row>
+                    <Row justify={'center'}>
                         <Col flex="30%">
                             <Typography.Paragraph
                                 className="workspaces-content-header-text"
@@ -67,7 +67,7 @@ const WorkspaceContent = () => {
             </Row>
             <Row justify="center">
                 <Col className="workspaces-content" flex={layout}>
-                    <Row>
+                    <Row justify="center">
                         <Col flex="30%">
                             <Typography.Paragraph
                                 className="workspaces-content-header-text"
@@ -82,17 +82,22 @@ const WorkspaceContent = () => {
             </Row>
             <Row justify="center">
                 <Col className="workspaces-content" flex={layout}>
-                    <Button
-                        type="primary"
-                        size="large"
-                        style={{ fontSize: '18px', fontWeight: '700' }}
-                        onClick={onAddWorkspaceClick}
-                    >
-                        Create Workspace
-                        <span>
-                            <ArrowRightOutlined style={{ fontWeight: '700' }} />
-                        </span>
-                    </Button>
+                    <Row justify="center">
+                        <Col>
+                            {' '}
+                            <Button
+                                type="primary"
+                                size="large"
+                                style={{ fontSize: '18px', fontWeight: '700' }}
+                                onClick={onAddWorkspaceClick}
+                            >
+                                Create Workspace
+                                <span>
+                                    <ArrowRightOutlined style={{ fontWeight: '700' }} />
+                                </span>
+                            </Button>
+                        </Col>
+                    </Row>
                 </Col>
             </Row>
             <Row justify="center">
